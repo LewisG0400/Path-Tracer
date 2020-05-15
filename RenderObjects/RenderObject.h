@@ -13,8 +13,10 @@ typedef enum matType {
 typedef struct mat {
 	vec3f colour;
 	MaterialType type;
-	float roughness, specular, mettalic;
+	float roughness;
 	float emmisitivity;
+	//Index of refraction
+	float ior;
 
 	mat() : colour(vec3f(0.8f, 0.8f, 0.8f)), type(MaterialType::DIFFUSE), emmisitivity(0.0f) {}
 

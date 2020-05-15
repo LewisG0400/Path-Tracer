@@ -74,6 +74,14 @@ void World::render(vec3f rayOrigin, vec3f rayDir, int depth, vec3f& colour) {
 		render(hit, dir, depth + 1, temp);
 		colour = colour + emmission + (material->colour * temp * costheta / PROBABILITY);
 	}
+	else if(material->type == MaterialType::REFLECTIVE) {
+		vec3f dir = vec3<float>::normalise(vec3<float>::reflect(rayDir, norm));
+
+		vec3f temp = vec3f(0.0f, 0.0f, 0.0f);
+		render(hit, dir, depth + 1, temp);
+
+		colour = colour + temp;
+	}
 }
 
 float World::getRand() {

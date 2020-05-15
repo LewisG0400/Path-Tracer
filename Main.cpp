@@ -12,7 +12,7 @@
 #define WIDTH 100
 #define HEIGHT 100
 
-#define SAMPLES_PER_PIXEL 100
+#define SAMPLES_PER_PIXEL 750
 
 float aspectRatio = (float)WIDTH / (float)HEIGHT;
 float fov = 45.0f;
@@ -23,16 +23,17 @@ int main() {
     World* world = new World();
 
     Material* whiteDiffuse = new Material(vec3f(0.8f, 0.8f, 0.8f), MaterialType::DIFFUSE, 0.0f);
+    Material* mirror = new Material(vec3f(1.0f, 1.0f, 1.0f), MaterialType::REFLECTIVE, 0.0f);
 
     world->addRenderObject(new Sphere(vec3f(1.0f, 0.0f, -1.0f), vec3f(0.0f, 0.0f, 0.0f), vec3f(1.0f, 1.0f, 1.0f), whiteDiffuse));
-    world->addRenderObject(new Sphere(vec3f(-1.0f, 0.5f, -3.0f), vec3f(0.0f, 0.0f, 0.0f), vec3f(1.0f, 1.0f, 1.0f), whiteDiffuse));
+    world->addRenderObject(new Sphere(vec3f(-1.0f, 0.5f, -3.0f), vec3f(0.0f, 0.0f, 0.0f), vec3f(1.0f, 1.0f, 1.0f), mirror));
     //Floor
     world->addRenderObject(new Plane(vec3f(0.0f, -2.0f, 1.0f), vec3f(0.0f, 1.0f, 0.0f), vec3f(1.0f, 1.0f, 1.0f), new Material(vec3f(1.0f, 1.0f, 1.0f), MaterialType::DIFFUSE, 0.0f)));
     //Ceiling
     world->addRenderObject(new Plane(vec3f(0.0f, 3.1f, 0.0f), vec3f(0.0f, -1.0f, 0.0f), vec3f(1.0f, 1.0f, 1.0f), whiteDiffuse));
     //Light
     //world->addRenderObject(new Sphere(vec3f(0.0f, 2.0f, 0.0f), vec3f(0.0f, -1.0f, 0.0f), vec3f(1.0f, 1.0f, 1.0f), new Material(vec3f(1.0f, 1.0f, 1.0f), MaterialType::DIFFUSE, 5.0f)));
-    world->addRenderObject(new Plane(vec3f(0.0f, 3.0f, -3.0f), vec3f(0.0f, -1.0f, 0.0f), vec3f(0.6f, 0.6f, 0.6f), new Material(vec3f(1.0f, 1.0f, 1.0f), MaterialType::DIFFUSE, 5.0f)));
+    world->addRenderObject(new Plane(vec3f(0.0f, 3.0f, -3.0f), vec3f(0.0f, -1.0f, 0.0f), vec3f(1.0f, 1.0f, 1.0f), new Material(vec3f(1.0f, 1.0f, 1.0f), MaterialType::DIFFUSE, 5.0f)));
     //Left wall
     world->addRenderObject(new Plane(vec3f(-3.0f, 0.0f, 0.0f), vec3f(1.0f, 0.0f, 0.0f), vec3f(1.0f, 1.0f, 1.0f), new Material(vec3f(1.0f, 0.0f, 0.0f), MaterialType::DIFFUSE, 0.0f)));
     //Right Wall

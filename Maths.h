@@ -92,6 +92,9 @@ public:
 		return ret;
 	}
 
+	inline static vec3<T> reflect(vec3<T> incident, vec3<T> normal) {
+		return incident - normal * vec3<float>::dot(incident, normal) * 2.0f;
+	}
 
 	inline bool operator != (vec3<T> other) {
 		if (this->x == other.x && this->y == other.y && this->z == other.z) return true;

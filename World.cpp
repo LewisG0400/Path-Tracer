@@ -14,6 +14,29 @@ vec3f World::hemisphereSample(float a, float b) {
 	return vec3f(cosf(phi) * r, sinf(phi) * r, a);
 }
 
+vec3f World::refract(vec3f incident, vec3f normal, float ior) {
+	float angle = vec3<float>::dot(incident, normal);
+
+	float iorOutside = 1.0f, iorInside = ior;
+
+	//Entering surface
+	if(angle < 0.0f) {
+		angle = -angle;
+	}
+	else {
+		iorOutside = ior;
+		iorInside = 1.0f;
+		normal = normal * -1.0f;
+	}
+
+	float n = iorOutside / iorInside;
+
+	float sinT = n * n * (1 - angle * angle);
+	if(sinT > 1.0f) return vec3f(0.0f, 0.0f, 0.0f);
+	float cosT = sqrtf(1.0f - sinT);
+	return vec3<float>::normalise(incident * n + normal * (n * angle - cosT));
+}
+
 //Needs optimised
 RenderObject* World::intersect(vec3f rayOrigin, vec3f rayDir, float& dist) {
 	RenderObject* closest = nullptr;
@@ -81,6 +104,41 @@ void World::render(vec3f rayOrigin, vec3f rayDir, int depth, vec3f& colour) {
 		render(hit, dir, depth + 1, temp);
 
 		colour = colour + temp;
+	}
+	else if(material->type == MaterialType::GLASS) {
+		float iorOutside = 1.0f, iorInside = material->ior;
+
+		float costheta1 = vec3<float>::dot(rayDir, norm);
+
+		float R0 = (iorOutside - iorInside) / (iorOutside + iorInside);
+		R0 = R0 * R0;
+
+		bool outside = false;
+
+		if(costheta1 < 0.0f) {
+			iorOutside = iorInside;
+			iorInside = 1.0f;
+
+			outside = true;
+		}
+
+		float probability = R0 + (1.0f - R0) * powf(1.0f + costheta1, 5.0f);
+
+		vec3f refractionDir = refract(rayDir, norm, material->ior);
+
+		float val = getRand();
+
+		//std::cout << val << ", " << probability << std::endl;
+
+		if((refractionDir != vec3f(0.0f, 0.0f, 0.0f) && val > probability) || !outside) {
+			rayDir = refractionDir;
+		}
+		else {
+			rayDir = vec3<float>::normalise(vec3<float>::reflect(rayDir, norm));
+		}
+		vec3f temp = vec3f(0.0f, 0.0f, 0.0f);
+		render(hit, rayDir, depth + 1, temp);
+		colour = colour + temp * 1.15;
 	}
 }
 

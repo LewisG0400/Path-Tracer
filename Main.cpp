@@ -9,10 +9,10 @@
 #include "RenderObjects/Sphere.h"
 #include "RenderObjects/Plane.h"
 
-#define WIDTH 100
-#define HEIGHT 100
+#define WIDTH 500
+#define HEIGHT 500
 
-#define SAMPLES_PER_PIXEL 750
+#define SAMPLES_PER_PIXEL 2500
 
 float aspectRatio = (float)WIDTH / (float)HEIGHT;
 float fov = 45.0f;
@@ -24,8 +24,10 @@ int main() {
 
     Material* whiteDiffuse = new Material(vec3f(0.8f, 0.8f, 0.8f), MaterialType::DIFFUSE, 0.0f);
     Material* mirror = new Material(vec3f(1.0f, 1.0f, 1.0f), MaterialType::REFLECTIVE, 0.0f);
+    Material* glass = new Material(vec3f(1.0f, 1.0f, 1.0f), MaterialType::GLASS, 0.0f);
+    glass->ior = 1.1f;
 
-    world->addRenderObject(new Sphere(vec3f(1.0f, 0.0f, -1.0f), vec3f(0.0f, 0.0f, 0.0f), vec3f(1.0f, 1.0f, 1.0f), whiteDiffuse));
+    world->addRenderObject(new Sphere(vec3f(1.0f, 0.0f, -1.0f), vec3f(0.0f, 0.0f, 0.0f), vec3f(1.0f, 1.0f, 1.0f), glass));
     world->addRenderObject(new Sphere(vec3f(-1.0f, 0.5f, -3.0f), vec3f(0.0f, 0.0f, 0.0f), vec3f(1.0f, 1.0f, 1.0f), mirror));
     //Floor
     world->addRenderObject(new Plane(vec3f(0.0f, -2.0f, 1.0f), vec3f(0.0f, 1.0f, 0.0f), vec3f(1.0f, 1.0f, 1.0f), new Material(vec3f(1.0f, 1.0f, 1.0f), MaterialType::DIFFUSE, 0.0f)));
@@ -40,6 +42,8 @@ int main() {
     world->addRenderObject(new Plane(vec3f(3.0f, 0.0f, 0.0f), vec3f(-1.0f, 0.0f, 0.0f), vec3f(1.0f, 1.0f, 1.0f), new Material(vec3f(0.0f, 1.0f, 0.0f), MaterialType::DIFFUSE, 0.0f)));
     //Back wall
     world->addRenderObject(new Plane(vec3f(0.0f, 0.0f, -5.0f), vec3f(0.0f, 0.0f, 1.0f), vec3f(1.0f, 1.0f, 1.0f), new Material(vec3f(0.0f, 0.0f, 1.0f), MaterialType::DIFFUSE, 0.0f)));
+
+   // world->addRenderObject(new Plane(vec3f(0.0f, 0.0f, 2.0f), vec3f(0.0f, 0.2f, -1.0f), vec3f(1.0f, 1.0f, 1.0f), glass));
 
     vec3f* image = new vec3f[WIDTH * HEIGHT];
 

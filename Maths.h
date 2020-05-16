@@ -64,12 +64,12 @@ public:
 
 
 	inline float length() {
-		return sqrt(pow(this->x, 2) + pow(this->y, 2) + pow(this->z, 2));
+		return sqrt(this->x * this->x + this->y * this-> y + this->z * this->z);
 	}
 
 
 	inline static float length(vec3<T> vec) {
-		return sqrtf(powf(vec.x, 2) + powf(vec.y, 2) + powf(vec.z, 2));
+		return sqrtf(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
 	}
 
 
@@ -82,7 +82,6 @@ public:
 	inline static vec3<T> normalise(vec3<T> vec) {
 		return vec.normalise();
 	}
-
 
 	inline static vec3<T> clamp(vec3<T> vec, T min, T max) {
 		vec3<T>ret = vec3<T>(0.0f, 0.0f, 0.0f);
@@ -97,8 +96,8 @@ public:
 	}
 
 	inline bool operator != (vec3<T> other) {
-		if (this->x == other.x && this->y == other.y && this->z == other.z) return true;
-		return false;
+		if (this->x == other.x && this->y == other.y && this->z == other.z) return false;
+		return true;
 	}
 };
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <iostream>
 
 #include "RenderObjects/RenderObject.h"
 
@@ -23,7 +24,7 @@ private:
 
 	vec3f hemisphereSample(float a, float b);
 
-	void ons(vec3f a, vec3f& b, vec3f& c);
+	vec3f refract(vec3f incident, vec3f normal, float ior);
 
 	float getRand();
 };
